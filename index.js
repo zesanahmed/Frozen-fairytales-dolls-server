@@ -30,20 +30,17 @@ async function run() {
         client.connect();
 
 
-        const desneyCollection = client.db('fairyDB').collection('desneyDolls');
-        const animationCollection = client.db('fairyDB').collection('animationToys');
-        const frozenCollection = client.db('fairyDB').collection('frozenDolls');
 
-        app.get('/desneyDolls', async (req, res) => {
-            const result = await desneyCollection.find().toArray();
-            res.send(result);
-        });
-        app.get('/animationToys', async (req, res) => {
-            const result = await animationCollection.find().toArray();
-            res.send(result);
-        });
-        app.get('/frozenDolls', async (req, res) => {
-            const result = await frozenCollection.find().toArray();
+        const dollsCollection = client.db('fairyDB').collection('dolls');
+
+
+        app.get('/dolls', async (req, res) => {
+            console.log(req.query.category);
+            let query = {};
+            if (req.query?.category) {
+                query = { category: req.query.category }
+            }
+            const result = await dollsCollection.find(query).toArray();
             res.send(result);
         });
 
@@ -67,6 +64,9 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`frozen fairy is running on the port: ${port}`);
 })
+
+
+
 
 
 
