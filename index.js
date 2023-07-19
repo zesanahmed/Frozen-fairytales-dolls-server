@@ -32,8 +32,18 @@ async function run() {
 
 
         const dollsCollection = client.db('fairyDB').collection('dolls');
+        const toysCollection = client.db('fairyDB').collection('toys');
 
 
+        app.post('/toys', async (req, res) => {
+            const user = req.body;
+            console.log(user);
+            const result = await toysCollection.insertOne(user);
+            res.send(result)
+        })
+
+
+        //  reading category data
         app.get('/dolls', async (req, res) => {
             console.log(req.query.category);
             let query = {};
