@@ -27,7 +27,27 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        client.connect();
+
+
+        const desneyCollection = client.db('fairyDB').collection('desneyDolls');
+        const animationCollection = client.db('fairyDB').collection('animationToys');
+        const frozenCollection = client.db('fairyDB').collection('frozenDolls');
+
+        app.get('/desneyDolls', async (req, res) => {
+            const result = await desneyCollection.find().toArray();
+            res.send(result);
+        });
+        app.get('/animationToys', async (req, res) => {
+            const result = await animationCollection.find().toArray();
+            res.send(result);
+        });
+        app.get('/frozenDolls', async (req, res) => {
+            const result = await frozenCollection.find().toArray();
+            res.send(result);
+        });
+
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -47,3 +67,8 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`frozen fairy is running on the port: ${port}`);
 })
+
+
+
+
+
