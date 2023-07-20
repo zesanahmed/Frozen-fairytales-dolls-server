@@ -65,6 +65,13 @@ async function run() {
             res.send(result)
         })
 
+        app.delete('/addedToys/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await toysCollection.deleteOne(query);
+            res.send(result);
+        })
+
 
         //  reading category data
         app.get('/dolls', async (req, res) => {
