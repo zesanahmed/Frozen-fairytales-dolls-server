@@ -48,6 +48,22 @@ async function run() {
             res.send(toy);
         });
 
+        app.put('/toys/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedToy = req.body;
+            const toy = {
+                $set: {
+                    price: updatedToy.price,
+                    quantity: updatedToy.quantity,
+                    description: updatedToy.description
+                }
+            }
+            const result = await toysCollection.updateOne(filter, toy, options);
+            res.send(result);
+        })
+
         app.get('/addedToys', async (req, res) => {
             console.log(req.query.email);
             let query = {};
@@ -64,6 +80,22 @@ async function run() {
             const result = await toysCollection.insertOne(user);
             res.send(result)
         })
+
+
+
+        // app.patch('/addedToys/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const filter = { _id: new ObjectId(id) };
+        //     const updatedToy = req.body;
+        //     console.log(updatedToy);
+        //     const updateDoc = {
+        //         $set: {
+        //             status: updatedToy.status
+        //         },
+        //     };
+        //     const result = await toysCollection.updateOne(filter, updateDoc);
+        //     res.send(result);
+        // })
 
         app.delete('/addedToys/:id', async (req, res) => {
             const id = req.params.id;
